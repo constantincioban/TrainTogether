@@ -1,4 +1,4 @@
-package com.konovus.traintogether.ui.theme
+package com.konovus.traintogether.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
