@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -27,15 +28,23 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+
             TrainTogetherTheme {
-                Scaffold(modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background)
-                    .statusBarsPadding()
-                ) { _ ->
+
+                val navController = rememberNavController()
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                Scaffold(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background)
+                        .statusBarsPadding(),
+                    snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+
+                    ) { _ ->
                     Navigation(
-                        navController = rememberNavController(),
-                        snackbarHostState = remember { SnackbarHostState() }
+                        navController = navController,
+                        snackbarHostState = snackbarHostState
                     )
                 }
             }

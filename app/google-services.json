@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "200967417862",
+    "project_id": "traintogether-4a28c",
+    "storage_bucket": "traintogether-4a28c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200967417862:android:aeb615e128c7a42b581387",
+        "android_client_info": {
+          "package_name": "com.konovus.traintogether"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBj1EdwlSEzS7waGLKif2k3zJRplhOc9fU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

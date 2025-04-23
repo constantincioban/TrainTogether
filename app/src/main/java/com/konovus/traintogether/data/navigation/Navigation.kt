@@ -19,11 +19,7 @@ fun Navigation(
     authPreferenceWasAsked: Boolean = false,
 ) {
     val actions = remember(navController) { Actions(navController) }
-    val startDestination =
-        if (authPreferenceWasAsked)
-            Screens.Home.route
-        else
-            Screens.Auth.route
+    val startDestination = Screens.Auth.route
 
     NavHost(
         navController = navController,
@@ -33,10 +29,13 @@ fun Navigation(
         popEnterTransition = { EnterTransition.None },
         popExitTransition = { ExitTransition.None },
     ) {
+
+
         composable(
             route = Screens.Auth.route,
         ) {
             AuthScreen(
+                snackbarHostState = snackbarHostState,
                 navigateTo = { route, params -> actions.navigateAndClearStack(route, params) },
             )
         }

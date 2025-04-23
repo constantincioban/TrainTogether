@@ -1,10 +1,11 @@
 package com.konovus.traintogether.data.auth
 
-import com.konovus.traintogether.data.local.models.User
-
-
 interface IAuthHelper {
 
-    suspend fun login(): User?
-    fun logout(): Unit
+    suspend fun resetPassword(email: String, onResult: (Boolean, String?) -> Unit)
+
+    suspend fun createUserAccount(email: String, password: String, onResult: (Boolean, String?) -> Unit)
+
+    fun signInWithEmailPassword(email: String, password: String, onResult: (Boolean, String?) -> Unit)
+
 }
