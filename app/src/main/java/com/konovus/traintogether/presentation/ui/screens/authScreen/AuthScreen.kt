@@ -31,7 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.konovus.traintogether.R
-import com.konovus.traintogether.data.navigation.Screens
+import com.konovus.traintogether.navigation.Screens
 import com.konovus.traintogether.data.utils.observeWithLifecycle
 import kotlinx.coroutines.launch
 import com.konovus.traintogether.presentation.ui.screens.authScreen.composables.CreateAccountForm
@@ -90,7 +90,7 @@ fun AuthScreen(
                 painter = painterResource(id = R.drawable.logo_tt),
                 contentDescription = "TrainTogether Logo",
                 modifier = Modifier
-                    .size(196.dp)
+                    .size(196.dp),
             )
 
         }

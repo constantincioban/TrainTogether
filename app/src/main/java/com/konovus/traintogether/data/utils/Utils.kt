@@ -17,6 +17,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.konovus.traintogether.presentation.ui.screens.settingsScreen.AppTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -24,8 +25,86 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import kotlin.math.abs
+
+fun Long.toFormattedDateForStats(): String {
+    val formatter = SimpleDateFormat("MMM dd", Locale.getDefault())
+    return formatter.format(Date(this))
+}
+
+
+fun Calendar.setToStartOfDay(): Calendar = apply {
+    set(Calendar.HOUR_OF_DAY, 0)
+    set(Calendar.MINUTE, 0)
+    set(Calendar.SECOND, 0)
+    set(Calendar.MILLISECOND, 0)
+}
+
+fun Calendar.setToEndOfDay(): Calendar = apply {
+    set(Calendar.HOUR_OF_DAY, 23)
+    set(Calendar.MINUTE, 59)
+    set(Calendar.SECOND, 59)
+    set(Calendar.MILLISECOND, 999)
+}
+
+fun millisecondsToTimerString(milliseconds: Long): String {
+    // Determine if the input is negative
+    val isNegative = milliseconds < 0
+
+    // Use absolute value to calculate hours, minutes, and seconds
+    val totalSeconds = Math.abs(milliseconds) / 1000
+    val hours = totalSeconds / 3600
+    val minutes = (totalSeconds % 3600) / 60
+    val seconds = totalSeconds % 60
+
+    // Build the time string conditionally
+    val timeStringBuilder = StringBuilder()
+    if (hours > 0) {
+        timeStringBuilder.append(String.format("%d:", hours))
+    }
+    if (minutes > 0 || hours > 0) { // Show minutes if hours are shown or if minutes are greater than 0
+        timeStringBuilder.append(String.format("%02d:", minutes))
+    }
+    timeStringBuilder.append(String.format("%02d", seconds))
+
+    // Add negative sign if the original input was negative
+    return if (isNegative) "-$timeStringBuilder" else timeStringBuilder.toString()
+}
+
+
+fun String.toAppTheme(): AppTheme = when (this.lowercase()) {
+    "light" -> AppTheme.LIGHT
+    "dark" -> AppTheme.DARK
+    "auto" -> AppTheme.AUTO
+    else -> AppTheme.AUTO // Default fallback
+}
+
+fun Long.toTimeFormat(): String {
+    val totalMinutes = abs(this) / (1000 * 60)
+    val totalHours = totalMinutes / 60
+    val minutes = (totalMinutes % 60).toInt()
+    val hours = totalHours.toInt()
+
+    return when {
+        totalHours < 1 -> {
+            // Less than 1 hour: "45 min"
+            "$minutes min"
+        }
+        totalHours < 24 -> {
+            // 1-23 hours: "1h:12m"
+            "${hours}h ${minutes}m"
+        }
+        else -> {
+            // 24+ hours: "1d:1h"
+            val days = totalHours / 24
+            val remainingHours = (totalHours % 24).toInt()
+            "${days}d ${remainingHours}h"
+        }
+    }
+}
 
 fun Activity.openAppSettings() {
     Intent(
@@ -49,6 +128,10 @@ data class ImmutableList<T>(
     val wrapped: List<T> = listOf()
 ) : List<T> by wrapped
 
+@Immutable
+data class ImmutableMap<K, V>(
+    val wrapped: Map<K, V> = mapOf()
+) : Map<K, V> by wrapped
 
 @SuppressLint("Range")
 fun getDisplayNameFromUri(uri: android.net.Uri, context: Context): String {
@@ -64,6 +147,68 @@ fun getDisplayNameFromUri(uri: android.net.Uri, context: Context): String {
         }
     }
     return ""
+}
+
+fun findConsecutiveRanges(numbers: List<Int>): List<Pair<Int, Int>> {
+    val result = mutableListOf<Pair<Int, Int>>()
+
+    var start = 0
+    while (start < numbers.size) {
+        var end = start
+
+        // Extend the run while the next number is consecutive
+        while (end + 1 < numbers.size && numbers[end + 1] == numbers[end] + 1) {
+            end++
+        }
+
+        // Add range if it has at least 2 consecutive numbers
+        if (end > start) {
+            result.add(start to end)
+        }
+
+        // Move to next potential range
+        start = if (end > start) end + 1 else start + 1
+    }
+
+    return result
+}
+
+
+fun formatMillisToString(millis: Long): String {
+    val date = Date(millis)
+    val formatter = SimpleDateFormat("d MMM yy '@'HH:mm", Locale.UK)
+    return formatter.format(date)
+}
+
+fun formatStringToMillis(dateString: String): Long {
+    val formatter = SimpleDateFormat("d MMM yy '@'HH:mm", Locale.UK)
+    return formatter.parse(dateString)?.time
+        ?: throw IllegalArgumentException("Invalid date format")
+}
+
+
+fun formatMillisToDuration(millis: Long): String {
+    val totalMinutes = millis / (60 * 1000)
+    val hours = totalMinutes / 60
+    val minutes = totalMinutes % 60
+
+    return buildString {
+        if (hours > 0) append("$hours hour${if (hours > 1) "s" else ""} ")
+        if (minutes > 0 || hours == 0L) append("$minutes minute${if (minutes != 1L) "s" else ""}")
+    }.trim()
+}
+
+
+fun formatMillisToReadableTime(millis: Long): String {
+    val totalMinutes = millis / 1000 / 60
+    val hours = totalMinutes / 60
+    val minutes = totalMinutes % 60
+
+    return if (hours > 0) {
+        "${hours}h ${minutes}m"
+    } else {
+        "${minutes}m"
+    }
 }
 
 

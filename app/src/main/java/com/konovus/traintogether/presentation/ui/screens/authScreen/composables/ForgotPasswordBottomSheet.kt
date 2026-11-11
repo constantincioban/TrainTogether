@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.konovus.traintogether.data.utils.observeWithLifecycle
 import com.konovus.traintogether.presentation.ui.composables.AnimatedBorderCard
@@ -67,14 +68,19 @@ fun ForgotPasswordBottomSheet(
                 placeholder = { Text("Enter your email") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Email,
+                    ),
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = primaryColor,
                     unfocusedIndicatorColor = Color.Gray,
                     disabledIndicatorColor = Color.LightGray,
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
-                    disabledContainerColor = Color.Transparent
+                    disabledContainerColor = Color.Transparent,
+                    focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.primary
                 )
             )
             AnimatedVisibility(uiState.resetEmailMessage != null) {

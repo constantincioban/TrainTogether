@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -53,14 +54,19 @@ fun LoginForm(
             placeholder = { Text("Enter your email") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Next,
+                keyboardType = KeyboardType.Email,
+            ),
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = primaryColor,
                 unfocusedIndicatorColor = Color.Gray,
                 disabledIndicatorColor = Color.LightGray,
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent
+                disabledContainerColor = Color.Transparent,
+                focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedLabelColor = MaterialTheme.colorScheme.primary
             )
         )
 
@@ -76,7 +82,10 @@ fun LoginForm(
             trailingIcon = {
                 val icon = if (uiState.loginPasswordVisibility) Icons.Default.Visibility else Icons.Default.VisibilityOff
                 IconButton(onClick = { sendEvent(AuthEvent.ToggleLoginPasswordVisibility) }) {
-                    Icon(icon, contentDescription = if (uiState.loginPasswordVisibility) "Hide password" else "Show password")
+                    Icon(icon,
+                        contentDescription = if (uiState.loginPasswordVisibility) "Hide password" else "Show password",
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
                 }
             },
             colors = TextFieldDefaults.colors(
@@ -85,7 +94,9 @@ fun LoginForm(
                 disabledIndicatorColor = Color.LightGray,
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent
+                disabledContainerColor = Color.Transparent,
+                focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedLabelColor = MaterialTheme.colorScheme.primary
             )
         )
 

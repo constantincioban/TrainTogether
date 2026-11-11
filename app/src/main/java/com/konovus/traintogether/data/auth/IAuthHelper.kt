@@ -8,4 +8,5 @@ interface IAuthHelper {
 
     fun signInWithEmailPassword(email: String, password: String, onResult: (Boolean, String?) -> Unit)
 
+    fun signOut(onResult: (Boolean, String?) -> Unit)
 }

@@ -5,6 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.konovus.traintogether.data.auth.IAuthHelper
+import com.konovus.traintogether.data.local.models.UserProfile
+import com.konovus.traintogether.presentation.redux.AppState
+import com.konovus.traintogether.presentation.redux.Store
 import com.konovus.traintogether.presentation.ui.screens.authScreen.ToastMessage.EmailEmpty
 import com.konovus.traintogether.presentation.ui.screens.authScreen.ToastMessage.InvalidEmailFormat
 import com.konovus.traintogether.presentation.ui.screens.authScreen.ToastMessage.PasswordEmpty
@@ -18,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val auth: IAuthHelper,
+    private val store: Store<AppState>
 ) : ViewModel() {
 
     private val _uiState = mutableStateOf(AuthState())
@@ -162,12 +166,15 @@ class AuthViewModel @Inject constructor(
         auth.signInWithEmailPassword(
             email = _uiState.value.loginEmail,
             password = _uiState.value.loginPassword,
-        ) { success, error ->
+        ) { success, res ->
             _uiState.value = _uiState.value.copy(isLoading = false)
             if (success) {
                 _uiState.value = _uiState.value.copy(loginSuccessful = true)
+                viewModelScope.launch {
+                    store.update { store.state.value.copy(userProfile = UserProfile(res.toString())) }
+                }
             } else {
-                sendEvent(ToastMessage.AuthFailed(error.toString()))
+                sendEvent(ToastMessage.AuthFailed(res.toString()))
             }
             toggleIsLoadingLogin()
         }
@@ -186,12 +193,15 @@ class AuthViewModel @Inject constructor(
         auth.createUserAccount(
             email = _uiState.value.registerEmail,
             password = _uiState.value.registerPassword,
-        ) { success, error ->
+        ) { success, res ->
             _uiState.value = _uiState.value.copy(isLoading = false)
             if (success) {
                 _uiState.value = _uiState.value.copy(loginSuccessful = true)
+                viewModelScope.launch {
+                    store.update { store.state.value.copy(userProfile = UserProfile(id = res.toString())) }
+                }
             } else {
-                sendEvent(ToastMessage.AuthFailed(error.toString()))
+                sendEvent(ToastMessage.AuthFailed(res.toString()))
             }
             toggleIsLoadingRegister()
         }

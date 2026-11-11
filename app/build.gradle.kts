@@ -67,6 +67,7 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.play.services.base)
     implementation(libs.play.services.auth)
+    implementation(libs.androidx.compose.animation.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -108,6 +109,15 @@ dependencies {
 
 // Gson
     implementation(libs.gson)
+
+// Coil
+    implementation(libs.coil.compose)
+
+
+    //MpAndroidChart
+    implementation(libs.mpandroidchart)
+
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.32.0")
 
 
 

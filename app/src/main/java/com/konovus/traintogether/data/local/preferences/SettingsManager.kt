@@ -8,6 +8,11 @@ interface SettingsManager {
         const val USERNAME = "username"
         const val PROFILE_PIC_URI = "profile_pic_uri"
         const val THEME = "theme"
+        const val NOTIFICATIONS_ENABLED = "notifications_enabled"
+        const val UNITS = "units"
+        const val LANGUAGE = "language"
+        const val WORKOUT_FREQUENCY = "workout_frequency"
+        const val EXERCISE_PR = "exercise_pr"
     }
 
     suspend fun saveIntSetting(key: String, value: Int)
@@ -25,4 +30,8 @@ interface SettingsManager {
     suspend fun readBooleanSetting(key: String): Boolean
 
     suspend fun readStringListSetting(key: String): List<String>
+
+    suspend fun saveObjectList(key: String, objects: List<Any>)
+
+    suspend fun <T> readObjectList(key: String, clazz: Class<T>): List<T>
 }

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TrainTogether</string>
+    <string name="post_notifications_permission_description">This app needs to post notifications, in order for stopwatch to function in background.</string>
+    <string name="post_notifications_permanently_declined_description">"It seems that you have permanently declined to post notifications, you can go to app settings to grant it.</string>
+    <string name="write_external_storage_permission_description">This app needs storage access to save backup files to your Downloads folder.</string>
+    <string name="write_external_storage_permanently_declined_description">It seems that you have permanently declined storage access. You can go to app settings to grant it.</string>
 </resources>

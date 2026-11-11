@@ -44,7 +44,7 @@ class FirebaseAuth: IAuthHelper {
                 )
             ).await()
 
-            onResult(true, null)
+            onResult(true, userId)
         } catch (e: Exception) {
             Log.e("Auth", "Account creation failed", e)
             onResult(false, e.message)
@@ -60,7 +60,8 @@ class FirebaseAuth: IAuthHelper {
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        onResult(true, null)
+                        val userUid = FirebaseAuth.getInstance().currentUser?.uid
+                        onResult(true, userUid)
                     } else {
                         val errorMessage = task.exception?.message ?: "Unknown error"
                         onResult(false, errorMessage)
@@ -69,6 +70,15 @@ class FirebaseAuth: IAuthHelper {
         } catch (e: Exception) {
             onResult(false, e.message)
         }
+    }
 
+    override fun signOut(onResult: (Boolean, String?) -> Unit) {
+        try {
+            FirebaseAuth.getInstance().signOut()
+            onResult(true, "Successfully signed out")
+        } catch (e: Exception) {
+            Log.e("Auth", "Sign out failed", e)
+            onResult(false, e.message ?: "Sign out failed")
+        }
     }
 }

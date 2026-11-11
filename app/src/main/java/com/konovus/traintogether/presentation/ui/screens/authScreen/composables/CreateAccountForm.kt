@@ -27,6 +27,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -60,7 +61,10 @@ fun CreateAccountForm(
             placeholder = { Text("Enter your email") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Next,
+                keyboardType = KeyboardType.Email,
+                ),
             keyboardActions = KeyboardActions(
                 onNext = { passwordFocusRequester.requestFocus() }
             ),
@@ -68,7 +72,9 @@ fun CreateAccountForm(
                 focusedIndicatorColor = primaryColor,
                 unfocusedIndicatorColor = Color.Gray,
                 focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent
+                unfocusedContainerColor = Color.Transparent,
+                focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedLabelColor = MaterialTheme.colorScheme.primary
             )
         )
 
@@ -86,7 +92,7 @@ fun CreateAccountForm(
             trailingIcon = {
                 val icon = if (uiState.registerPasswordVisibility) Icons.Default.Visibility else Icons.Default.VisibilityOff
                 IconButton(onClick = { sendEvent(AuthEvent.ToggleRegisterPasswordVisibility) }) {
-                    Icon(icon, contentDescription = null)
+                    Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                 }
             },
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
@@ -97,7 +103,9 @@ fun CreateAccountForm(
                 focusedIndicatorColor = primaryColor,
                 unfocusedIndicatorColor = Color.Gray,
                 focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent
+                unfocusedContainerColor = Color.Transparent,
+                focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedLabelColor = MaterialTheme.colorScheme.primary
             )
         )
 
@@ -115,7 +123,7 @@ fun CreateAccountForm(
             trailingIcon = {
                 val icon = if (uiState.registerConfirmPasswordVisibility) Icons.Default.Visibility else Icons.Default.VisibilityOff
                 IconButton(onClick = { sendEvent(AuthEvent.ToggleRegisterConfirmPasswordVisibility) }) {
-                    Icon(icon, contentDescription = null)
+                    Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                 }
             },
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
@@ -126,7 +134,9 @@ fun CreateAccountForm(
                 focusedIndicatorColor = primaryColor,
                 unfocusedIndicatorColor = Color.Gray,
                 focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent
+                unfocusedContainerColor = Color.Transparent,
+                focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedLabelColor = MaterialTheme.colorScheme.primary
             )
         )
 

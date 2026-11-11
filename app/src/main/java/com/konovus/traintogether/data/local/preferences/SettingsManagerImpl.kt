@@ -9,6 +9,8 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.first
 
 class SettingsManagerImpl(
@@ -67,6 +69,21 @@ class SettingsManagerImpl(
         val dataStoreKey = stringSetPreferencesKey(key)
         val settings = context.dataStore.data.first()
         return settings[dataStoreKey]?.toList() ?: listOf()
+    }
+
+    override suspend fun saveObjectList(key: String, objects: List<Any>) {
+        val json = Gson().toJson(objects)
+        saveStringSetting(key, json)
+    }
+
+    override suspend fun <T> readObjectList(key: String, clazz: Class<T>): List<T> {
+        val json = readStringSetting(key)
+        return try {
+            val type = TypeToken.getParameterized(List::class.java, clazz).type
+            Gson().fromJson(json, type) ?: listOf()
+        } catch (e: Exception) {
+            listOf()
+        }
     }
 }
 

@@ -29,7 +29,7 @@ fun AnimatedBorderCard(
     modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(size = 0.dp),
     borderWidth: Dp = 3.dp,
-    gradient: Brush = Brush.sweepGradient(listOf(Color.Gray, Color.White)),
+    gradient: Brush = Brush.sweepGradient(listOf(Color.Gray, MaterialTheme.colorScheme.onBackground)),
     animationDuration: Int = 1500,
     onCardClick: () -> Unit = {},
     isLoading: Boolean = false,
